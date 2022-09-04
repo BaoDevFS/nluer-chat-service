@@ -7,13 +7,13 @@ services:
     environment:
       - MONGODB_URL=mongodb://mongodb:27017/woofie-chat
       - PORT=3000
-      - REDIS_HOST=redis
+      - REDIS_HOST=172.17.0.1
       - REDIS_PORT=6379
     ports:
-      - 22031:3000
+      - 10004:3000
     depends_on:
       - mongodb
-      - redis
+      # - redis
     volumes:
       - .:/usr/src/node-app
       - /usr/src/node-app/node_modules
@@ -29,19 +29,19 @@ services:
     networks:
       - woofie-chat-network
 
-  redis:
-    container_name: woofie-redis
-    image: redis
-    ports:
-      - 6379:6379
-    volumes:
-      - redis-data:/data
-    networks:
-      - woofie-chat-network
+  # redis:
+  #   container_name: woofie-redis
+  #   image: redis
+  #   ports:
+  #     - 6379:6379
+  #   volumes:
+  #     - redis-data:/data
+  #   networks:
+  #     - woofie-chat-network
 
 volumes:
   mongodb-data:
-  redis-data:
+  # redis-data:
 
 networks:
   woofie-chat-network:
