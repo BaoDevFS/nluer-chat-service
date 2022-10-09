@@ -25,7 +25,6 @@ services:
     volumes:
       - mongodb-data:/data/db
     network_mode: host
+
 volumes:
   mongodb-data:
-
-
