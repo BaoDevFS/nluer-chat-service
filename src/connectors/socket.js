@@ -9,7 +9,8 @@ const { allowOrigins } = require('../config/config');
 const { redisClient, setActiveUser, setInactiveUser } = require('./redis');
 const { getUser } = require('./socket_auth');
 const logger = require('../config/logger');
-
+const { caroGameInitConnection } = require('../controllers/caro_game/caro_game.controller');
+require('../controllers/caro_game/caro_game.controller');
 class SocketManager {
   constructor() {
     /** @type {{[k: string]: string}} */
@@ -73,7 +74,8 @@ class SocketManager {
       await socket.join(this.users[socket.id]);
       await setActiveUser(this.users[socket.id]);
       logger.debug(`Socket Connected ====> ${this.users[socket.id]}`);
-
+      // init socket game caro
+      caroGameInitConnection(socket,this._io);
       // event fired when the chat room is disconnected
       socket.on('disconnect', async () => {
         await setInactiveUser(this.users[socket.id]);

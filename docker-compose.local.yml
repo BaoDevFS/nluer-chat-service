@@ -1,19 +1,26 @@
 version: '3.2'
 
 services:
-  # mongodb:
-  #   container_name: woofiedb
-  #   image: mongo
-  #   ports:
-  #     - 27017:27017
-  #   restart: always
   redis:
-    container_name: woofieredis
+    container_name: nluer_chat_redis
     image: redis
     ports:
       - 6379:6379
     restart: always
-
-networks:
-  localnetwork:
-    external: true
+    network_mode: host
+  mongodb:
+    container_name: nluer_chat_mongo
+    image: mongo:4.2.1-bionic
+    ports:
+      - 27017:27017
+    volumes:
+      - mongodb-data:/data/db
+    network_mode: host
+  node-app:
+    container_name: node-app-local
+    depends_on:
+      - nluer_chat_mongo
+      - nluer_chat_redis
+    command: yarn start
+volumes:
+  mongodb-data:
